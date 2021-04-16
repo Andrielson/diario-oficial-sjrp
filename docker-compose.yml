@@ -1,0 +1,11 @@
+version: '2.4'
+
+services:
+  dev:
+    command: ["yarn", "dev"]
+    image: node:lts-alpine3.13
+    volumes:
+      - type: bind
+        source: .
+        target: /usr/local/src/diario
+    working_dir: /usr/local/src/diario
