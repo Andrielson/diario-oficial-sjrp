@@ -1,7 +1,18 @@
 import Head from "next/head";
+import { FormEvent, useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
+  const [email, setEmail] = useState<string>();
+  const [submitDisabled, setSubmitDisabled] = useState(true);
+
+  useEffect(() => setSubmitDisabled(!!!email || email.length < 10), [email]);
+
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    console.log(email);
+  };
+
   return (
     <div className={styles.container}>
       <Head>
@@ -10,6 +21,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
+        <img src="/bandeira-rio-preto.png" width="128"/>
         <h1 className={styles.title}>
           Newsletter do <br />
           Diário Oficial de <br />
@@ -24,7 +36,7 @@ export default function Home() {
 
         <div className={styles.grid}>
           <div className={styles.card}>
-            <form action="" method="post">
+            <form onSubmit={(e) => handleSubmit(e)}>
               <p>
                 <input
                   type="text"
@@ -34,10 +46,15 @@ export default function Home() {
                   autoFocus
                   required
                   className={styles.inputtext}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </p>
               <p>
-                <button type="submit" className={styles.btnsend}>
+                <button
+                  type="submit"
+                  disabled={submitDisabled}
+                  className={styles.btnsend}
+                >
                   Inscrever-se
                 </button>
               </p>
@@ -48,7 +65,7 @@ export default function Home() {
               <i>
                 Esta página não possui nenhuma relação com a prefeitura de São
                 José do Rio Preto-SP, sendo mantida por um desenvolvedor
-                independente para facilitar o acesso às publicações do diário
+                independente visando facilitar o acesso às publicações do diário
                 oficial.
               </i>
             </small>
