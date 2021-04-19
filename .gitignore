@@ -34,4 +34,5 @@ yarn-error.log*
 .vercel
 
 # arquivos de configuração
+.env.local
 docker-compose.override.yml
