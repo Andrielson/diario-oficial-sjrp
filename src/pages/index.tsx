@@ -3,14 +3,29 @@ import { FormEvent, useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
-  const [email, setEmail] = useState<string>();
+  const [email, setEmail] = useState<string>("");
   const [submitDisabled, setSubmitDisabled] = useState(true);
 
-  useEffect(() => setSubmitDisabled(!!!email || email.length < 10), [email]);
+  useEffect(() => setSubmitDisabled(email.length < 10), [email]);
 
-  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     console.log(email);
+    if (email.length < 10) {
+      alert("E-mail inválido!");
+      return;
+    }
+    const response = await fetch("/api/subscriptions", {
+      method: "POST",
+      cache: "no-cache",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    });
+    if (!response.ok) {
+      console.log(response.status);
+    }
   };
 
   return (
@@ -21,7 +36,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <img src="/bandeira-rio-preto.png" width="128"/>
+        <img src="/bandeira-rio-preto.png" width="128" />
         <h1 className={styles.title}>
           Newsletter do <br />
           Diário Oficial de <br />
